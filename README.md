@@ -1,38 +1,138 @@
+# AI-Based Smart Attendance Monitoring System
 
-# Face based attendance system using python and openCV
+An AI-powered attendance management system that uses face recognition to automatically detect, identify, and log attendance — removing the need for manual roll calls or physical registers.
 
-[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)                 
-[![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-390/) 
+The project has two parts:
 
-### What steps you have to follow??
-- Download or clone my Repository to your device
-- type `pip install -r requirements.txt` in command prompt(this will install required package for project)
-- Create a `TrainingImage` folder in a project folder.
-- open `attendance.py` and `automaticAttendance.py`, change all the path according to your system
-- Run `attandance.py` file
+1. **Core Desktop Application** — a Python + OpenCV + Tkinter app that registers student faces, trains a recognition model, and marks attendance automatically via webcam, exporting records to CSV.
+2. **Web Platform (extended module)** — a full-stack version with a Flask + MongoDB backend and a Next.js frontend, adding student/teacher login, live camera-based attendance sessions, and a dashboard to view records.
 
-### Project flow & explaination
-- After you run the project you have to register your face so that system can identify you, so click on register new student
-- After you click a small window will pop up in that you have to enter you ID and name and then click on `Take Image` button
-- After clicking `Take Image` button A camera window will pop up and it will detect your Face and take upto 50 Images(you can change the number of Image it can take) and stored in the folder named `TrainingImage`. more you give the image to system, the better it will perform while recognising the face.
-- Then you have to click on `Train Image` button, It will train the model and convert all the Image into numeric format so that computer can understand. we are training the image so that next time when we will show the same face to the computer it will easily identify the face.
-- It will take some time(depends on you system).
-- After training model click on `Automatic Attendance` ,you have to enter the subject name and then it can fill attendace by your face using our trained model.
-- it will create `.csv` file for every subject you enter and seperate every `.csv` file according the subject
-- You can view the attendance after clicking `View Attendance` button. It will show record in tabular format.
+---
 
-### Screenshots
+## Features
 
-### Simple UI
-<img src='https://github.com/Patelrahul4884/Attendance-Management-system-using-face-recognition/blob/master/Project%20Snap/1.PNG'>
+- **Face Registration** — capture and store a student's face samples using a webcam.
+- **Model Training** — train a face-recognition model (LBPH in the desktop app / DeepFace + MTCNN embeddings in the web module) on the registered faces.
+- **Automatic Attendance** — recognize faces in real time and mark attendance without manual input.
+- **Subject/Session-wise Records** — attendance is logged per subject/session with date and timestamp.
+- **Attendance History** — view past attendance in a tabular format; export to CSV/Excel.
+- **Web Platform Extras** — student and teacher authentication, student registration & profile updates, teacher-initiated attendance sessions, and a dashboard for viewing attendance records.
 
-### While taking Image
-![Screenshot (103)](https://user-images.githubusercontent.com/26384517/86820502-c7f44500-c0a6-11ea-9530-6317ec2059d9.png)
+---
 
-## While taking Attendance
-![Screenshot (91)](https://user-images.githubusercontent.com/26384517/86821090-9465ea80-c0a7-11ea-9680-777923663d0c.png)
+## Tech Stack
 
-## Attendance in tabular format 
-<img src='https://github.com/Patelrahul4884/Attendance-Management-system-using-face-recognition/blob/master/Project%20Snap/7.PNG'>
+**Desktop Application**
+- Python 3
+- OpenCV (Haar Cascade + LBPH Face Recognizer)
+- Tkinter (GUI)
+- Pandas, NumPy, Pillow
+- pyttsx3 (voice feedback)
 
-## Just follow me and Star⭐ my repository
+**Web Platform**
+- **Backend:** Flask, Flask-CORS, Flask-Bcrypt, PyMongo (MongoDB), DeepFace, MTCNN, OpenCV
+- **Frontend:** Next.js, React, TypeScript, Tailwind CSS, face-api.js, Socket.IO client, Framer Motion
+- **Database:** MongoDB
+
+---
+
+## Project Structure
+
+```
+├── attendance.py                  # Main desktop app (Tkinter GUI entry point)
+├── takeImage.py                   # Captures and stores face samples
+├── trainImage.py                  # Trains the LBPH face recognition model
+├── automaticAttedance.py          # Marks attendance via live face recognition
+├── show_attendance.py             # Displays attendance records
+├── takemanually.py                # Manual attendance fallback
+├── haarcascade_frontalface_*.xml  # Pre-trained face detection classifiers
+├── TrainingImageLabel/            # Trained model file (Trainner.yml)
+├── StudentDetails/                # Registered student records (CSV)
+├── Attendance/                    # Generated attendance CSVs (per subject)
+│
+├── backend/                       # Flask API for the web platform
+│   ├── app.py
+│   ├── auth/                      # Signup/login routes
+│   ├── student/                   # Registration, profile updates, attendance view
+│   ├── teacher/                   # Attendance session handling
+│   └── recognition.py             # Face detection & embedding logic (DeepFace/MTCNN)
+│
+└── frontend/                      # Next.js web client
+    └── app/                        # Pages for student/teacher dashboards, sessions, auth
+```
+
+---
+
+## Getting Started
+
+### 1. Desktop Application
+
+```bash
+# Clone the repository
+git clone https://github.com/<your-username>/<your-repo>.git
+cd <your-repo>
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the application
+python attendance.py
+```
+
+**How to use:**
+1. Click **Register New Student**, enter an enrollment number and name, then click **Take Image** to capture face samples via webcam.
+2. Click **Train Image** to train the recognition model on all registered faces.
+3. Click **Automatic Attendance**, enter the subject name, and let the system recognize faces and mark attendance.
+4. Click **View Attendance** to see records in tabular format.
+
+### 2. Web Platform
+
+**Backend:**
+```bash
+cd backend
+pip install -r requirements.txt
+python app.py
+```
+
+**Frontend:**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend runs at `http://localhost:3000`, with the backend API running separately (default `http://localhost:5000`).
+
+> Note: The web platform requires a MongoDB instance — set your connection string as an environment variable rather than hardcoding it.
+
+---
+
+## Screenshots
+
+**Application UI**
+![Simple UI](Project%20Snap/1.PNG)
+
+**Capturing Face Samples**
+![Taking Image](Project%20Snap/2.PNG)
+
+**Marking Attendance**
+![Marking Attendance](Project%20Snap/6.PNG)
+
+**Attendance in Tabular Format**
+![Attendance Table](Project%20Snap/7.PNG)
+
+---
+
+## Future Scope
+
+- Cloud deployment of the web platform for multi-classroom use.
+- Real-time notifications for absentee alerts.
+- Integration with institutional ERP/student management systems.
+- Liveness detection to prevent photo-based spoofing.
+
+---
+
+## Author
+
+**Dhruv Johri**
+Final Year, B.Tech CSE, SRMS CET, Bareilly (AKTU)
